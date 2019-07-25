@@ -29,12 +29,14 @@ public class Grid2D : MonoBehaviour
     [SerializeField] bool estaJugando = true; //muestra en el inspector una casilla con chulo mientras esta jugando y cuando para queda vacia
     int cambioColor = 2; //para cambiar el color de la esfera en cada iteracion
     int verifNum = 0; //para capturar un numero en la entrada del usuario para ver si gana
+    int teclaNumero = 0;
 
     void Update()
     {
         Vector3 mPosicion = Camera.main.ScreenToWorldPoint(Input.mousePosition); //obtiene la posicion del mouse
         int x = (int)(mPosicion.x + 0.5f); //convierte la posicion del mouse en x, en una variable entera
         int y = (int)(mPosicion.y + 0.5f); //convierte la posicion del mouse en y, en una variable entera
+        
 
         if (estaJugando) //desde que no alla un ganador estara verdadera y si hay un ganador se volvera falsa
         {
@@ -51,36 +53,41 @@ public class Grid2D : MonoBehaviour
                 }
                 
                 cambioColor += 1; //aumenta la variable para cambiar el color
+                teclaNumero = 0;
             }
             //REGLA
             if (x >= 0 && y >= 0 && x < width && y < height)
             {
-                if (Input.GetKeyDown(KeyCode.Alpha1)) //si el usuario escoje el numero 1 se llaman las funciones que verifican si hay cuatro en linea y si el numero 1 es el correcto
+                
+                if (Input.GetKeyDown(KeyCode.Alpha1) && teclaNumero < 1) //si el usuario escoje el numero 1 se llaman las funciones que verifican si hay cuatro en linea y si el numero 1 es el correcto
                 {
+                    teclaNumero += 1;
                     verifNum = 1; //hace a la variable con un valor de 1 para ver si es el numero correcto para ganar
                     VerificGanador(x, y, Color.red, verifNum); //llamado de funcion verificadora con color rojo
                     VerificGanador(x, y, Color.green, verifNum); //llamado de funcion verificadora con color verde
                 }
-                else if (Input.GetKeyDown(KeyCode.Alpha2)) //si el usuario escoje el numero 2 se llaman las funciones que verifican si hay cuatro en linea y si el numero 2 es el correcto
+                else if (Input.GetKeyDown(KeyCode.Alpha2) && teclaNumero < 1) //si el usuario escoje el numero 2 se llaman las funciones que verifican si hay cuatro en linea y si el numero 2 es el correcto
                 {
+                    teclaNumero += 1;
                     verifNum = 2; //hace a la variable con un valor de 2 para ver si es el numero correcto para ganar
                     VerificGanador(x, y, Color.red, verifNum); //llamado de funcion verificadora con color rojo
                     VerificGanador(x, y, Color.green, verifNum); //llamado de funcion verificadora con color verde
                 }
-                else if (Input.GetKeyDown(KeyCode.Alpha3)) //si el usuario escoje el numero 3 se llaman las funciones que verifican si hay cuatro en linea y si el numero 3 es el correcto
+                else if (Input.GetKeyDown(KeyCode.Alpha3) && teclaNumero < 1) //si el usuario escoje el numero 3 se llaman las funciones que verifican si hay cuatro en linea y si el numero 3 es el correcto
                 {
+                    teclaNumero += 1;
                     verifNum = 3; //hace a la variable con un valor de 3 para ver si es el numero correcto para ganar
                     VerificGanador(x, y, Color.red, verifNum); //llamado de funcion verificadora con color rojo
                     VerificGanador(x, y, Color.green, verifNum); //llamado de funcion verificadora con color verde
-                } 
+                }
             }
         }
-        
-        
     }
+
 
     public void VerificGanador(int x, int y, Color colorcito, int verifNum) //funcion para verificar si hay cuatro en linea y para saber si el numero que eligio el usuario coincide con el random de la funcion
     {
+        
         int contador = 0; //cuenta las esferas que hay en una linea del mismo
         int cambiaNum = Random.Range(1,4); //crea una variable random para evaluar con la entarda del usuario y verificar si gana(REGLA)
         for (int i = x - 3; i <= x + 3; i++) //bucle para iterar desde 3 posiciones antes, hasta 3 posiciones despues de la esfera seleccionada
@@ -92,7 +99,16 @@ public class Grid2D : MonoBehaviour
                     contador++; //se suma 1 a contador
                     if (contador == 4 && cambiaNum == verifNum) //si el contador es igual a 4 y si el numero que ingreso el usuario es igual al random
                     {
-                        Debug.Log("gana fila"); //muestra que linea gano
+                        string colr;
+                        if (colorcito == Color.red)
+                        {
+                            colr = "rojo";
+                        }
+                        else
+                        {
+                            colr = "verde";
+                        }
+                        Debug.Log("gana fila y color: " + colr); //muestra que linea gano
                         estaJugando = false; //hace la variable estaJugando falsa para que se salga del loop principal y deje de cambiar el color de las esferas
                     }
                 }
@@ -114,7 +130,7 @@ public class Grid2D : MonoBehaviour
                     contador++; //se suma 1 a contador
                     if (contador == 4 && cambiaNum == verifNum) //si el contador es igual a 4 y si el numero que ingreso el usuario es igual al random
                     {
-                        Debug.Log("gana columna" ); //muestra que linea gano
+                        Debug.Log("gana columna y color: " + colorcito); //muestra que linea gano
                         estaJugando = false; //hace la variable estaJugando falsa para que se salga del loop principal y deje de cambiar el color de las esferas
                     }
                 }
@@ -137,7 +153,7 @@ public class Grid2D : MonoBehaviour
                     contador++; //se suma 1 a contador
                     if (contador == 4 && cambiaNum == verifNum) //si el contador es igual a 4 y si el numero que ingreso el usuario es igual al random
                     {
-                        Debug.Log("gana diagonal"); //muestra que linea gano
+                        Debug.Log("gana diagonal y color: " + colorcito); //muestra que linea gano
                         estaJugando = false; //hace la variable estaJugando falsa para que se salga del loop principal y deje de cambiar el color de las esferas
                     }
                 }
@@ -160,7 +176,7 @@ public class Grid2D : MonoBehaviour
                     contador++; //se suma 1 a contador
                     if (contador == 4 && cambiaNum == verifNum) //si el contador es igual a 4 y si el numero que ingreso el usuario es igual al random
                     {
-                        Debug.Log("gana diagonal"); //muestra que linea gano
+                        Debug.Log("gana diagonal y color: " + colorcito); //muestra que linea gano
                         estaJugando = false; //hace la variable estaJugando falsa para que se salga del loop principal y deje de cambiar el color de las esferas
                     }
                 }
